@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bradley Dental Group - Smart Chatbot & Admin Console</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Google Fonts for premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="light-theme">
+  
+  <!-- Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo">
+        <svg class="logo-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C11.5 2 7 5.5 7 10C7 16 12 22 12 22C12 22 17 16 17 10C17 5.5 12.5 2 12 2Z" fill="var(--primary-color)" fill-opacity="0.2" stroke="var(--primary-color)" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M12 6C10.5 8.5 9 10 9 12.5C9 14.5 10.5 16 12 16C13.5 16 15 14.5 15 12.5C15 10 13.5 8.5 12 6Z" fill="var(--primary-color)" stroke="var(--primary-color)" stroke-width="1.5"/>
+        </svg>
+        <div class="logo-text">
+          <span class="logo-title">Bradley Dental Group</span>
+          <span class="logo-subtitle">Bergenfield, NJ</span>
+        </div>
+      </div>
+      
+      <nav class="main-nav">
+        <button id="btn-view-site" class="nav-tab active">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          Patient Website
+        </button>
+        <button id="btn-view-admin" class="nav-tab">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="9" y1="9" x2="21" y2="9"></line><line x1="9" y1="15" x2="21" y2="15"></line></svg>
+          Admin Dashboard
+          <span class="badge" id="admin-badge-count" style="display: none;">0</span>
+        </button>
+      </nav>
+      
+      <div class="header-actions">
+        <a href="tel:2013856900" class="btn btn-phone">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          (201) 385-6900
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Viewport Container -->
+  <main class="viewport-container">
+    
+    <!-- 1. Patient Website View -->
+    <section id="patient-site-view" class="view-panel active">
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+          <span class="hero-tag">Welcome to Bradley Dental Group</span>
+          <h1>Creating Beautiful,<br><span class="text-gradient">Healthy Smiles</span></h1>
+          <p>Your trusted partner in Bergenfield, NJ for high-quality, comfortable dental care. From Zoom whitening to state-of-the-art dental implants, we put your comfort and smile first.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="openChatWithGoal('book')">
+              Book Appointment
+            </button>
+            <a href="#services" class="btn btn-secondary">Explore Services</a>
+          </div>
+          
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-num">20+</span>
+              <span class="stat-label">Years of Care</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">4.9★</span>
+              <span class="stat-label">Google Rating</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">10k+</span>
+              <span class="stat-label">Happy Patients</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Contact Info Banner -->
+      <div class="info-banner">
+        <div class="banner-item">
+          <div class="icon-wrapper">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          </div>
+          <div>
+            <h4>Visit Our Office</h4>
+            <p>35 North Washington Avenue, Bergenfield, NJ 07621</p>
+          </div>
+        </div>
+        <div class="banner-item">
+          <div class="icon-wrapper">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
+          <div>
+            <h4>Office Hours</h4>
+            <p>Mon - Fri: 9:00 AM - 6:00 PM | Sat: 9:00 AM - 2:00 PM</p>
+          </div>
+        </div>
+        <div class="banner-item">
+          <div class="icon-wrapper">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+          <div>
+            <h4>Email Queries</h4>
+            <p>bradleydental35@gmail.com</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dental Services Grid -->
+      <section id="services" class="services-section">
+        <div class="section-header">
+          <h2>Our Dental Services</h2>
+          <p>We provide a comprehensive list of general, restorative, and cosmetic dental treatments to meet the needs of the whole family.</p>
+        </div>
+        
+        <div class="services-grid">
+          <div class="service-card" onclick="openChatWithGoal('whitening')">
+            <div class="service-icon color-blue">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            </div>
+            <h3>Zoom Teeth Whitening</h3>
+            <p>Fast, safe, and dramatically effective whitening treatment to brighten your smile up to 8 shades in a single visit.</p>
+            <span class="service-link">Inquire Whitening →</span>
+          </div>
+
+          <div class="service-card" onclick="openChatWithGoal('implants')">
+            <div class="service-icon color-teal">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8M4 12c0 2 3 3 8 3s8-1 8-3M4 12a4 4 0 0 0 8 4 4 4 0 0 0 8-4M12 16v6"/></svg>
+            </div>
+            <h3>Dental Implants</h3>
+            <p>Permanent, natural-looking replacement for missing teeth. Implants anchor crowns directly into the jawbone for stability.</p>
+            <span class="service-link">Inquire Implants →</span>
+          </div>
+
+          <div class="service-card" onclick="openChatWithGoal('invisalign')">
+            <div class="service-icon color-purple">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </div>
+            <h3>Invisalign / Orthodontics</h3>
+            <p>Straighten your teeth invisibly with comfortable, clear custom aligners. Suitable for teens and adults.</p>
+            <span class="service-link">Inquire Invisalign →</span>
+          </div>
+
+          <div class="service-card" onclick="openChatWithGoal('root canal')">
+            <div class="service-icon color-orange">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 15v-4M12 9h.01"/></svg>
+            </div>
+            <h3>Root Canal Treatment</h3>
+            <p>Gentle and precise treatments to save infected or highly decayed teeth, relieving chronic pain and preventing extraction.</p>
+            <span class="service-link">Learn More →</span>
+          </div>
+
+          <div class="service-card" onclick="openChatWithGoal('cosmetics')">
+            <div class="service-icon color-pink">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v12M6 12h12"/></svg>
+            </div>
+            <h3>Botox & Cosmetics</h3>
+            <p>Premium aesthetics services, including Xeomin, Botox, Kybella, and Juvederm to enhance facial structure and contouring.</p>
+            <span class="service-link">Explore Cosmetics →</span>
+          </div>
+
+          <div class="service-card" onclick="openChatWithGoal('extractions')">
+            <div class="service-icon color-red">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-4V6a2 2 0 0 0-4 0v4H6a2 2 0 0 0 0 4h4v4a2 2 0 0 0 4 0v-4h4a2 2 0 0 0 0-4z"/></svg>
+            </div>
+            <h3>Extractions & Wisdom Teeth</h3>
+            <p>Safe and completely painless extraction procedures for decayed teeth or impacted wisdom teeth in a comfortable setting.</p>
+            <span class="service-link">Learn More →</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials Section -->
+      <section class="testimonials-section">
+        <div class="section-header">
+          <h2>What Our Patients Say</h2>
+          <p>We pride ourselves on offering outstanding service and clean, modern environments.</p>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="rating">★★★★★</div>
+            <p>"Had zoom teeth whitening done very happy with my results. Highly recommend this team."</p>
+            <div class="patient">
+              <div class="avatar">MA</div>
+              <div>
+                <h4>Mike A.</h4>
+                <span>Patient</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="rating">★★★★★</div>
+            <p>"Very fast and friendly service. The office is very clean and modern. I was pleased! A very enjoyable experience."</p>
+            <div class="patient">
+              <div class="avatar">EM</div>
+              <div>
+                <h4>Eva M.</h4>
+                <span>Patient</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Footer -->
+      <footer class="site-footer">
+        <div class="footer-bottom">
+          <p>&copy; 2026 Bradley Dental Group. All rights reserved.</p>
+          <p>35 N Washington Ave, Bergenfield, NJ 07621 | Phone: (201) 385-6900</p>
+        </div>
+      </footer>
+    </section>
+
+    <!-- 2. Admin Dashboard View -->
+    <section id="admin-dashboard-view" class="view-panel">
+      <div class="admin-layout">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+          <div class="sidebar-title">Admin Management</div>
+          <ul class="sidebar-menu">
+            <li class="menu-item active" data-tab="admin-analytics">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              Performance Analytics
+            </li>
+            <li class="menu-item" data-tab="admin-leads">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              Leads Inbox
+              <span class="badge badge-pill" id="badge-leads-count">0</span>
+            </li>
+            <li class="menu-item" data-tab="admin-transcripts">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              Chat Transcripts
+            </li>
+            <li class="menu-item" data-tab="admin-settings">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              Chatbot Configuration
+            </li>
+          </ul>
+        </aside>
+        
+        <!-- Dashboard Sub-Views -->
+        <div class="admin-content-area">
+          
+          <!-- TAB A: Analytics -->
+          <div id="admin-analytics" class="dashboard-subview active">
+            <h2 class="dashboard-header">Performance Analytics</h2>
+            
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-card-title">Total Chats</div>
+                <div class="stat-card-value" id="stat-chats-count">0</div>
+                <div class="stat-card-trend trend-up">↑ 12% vs last week</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-title">Leads Captured</div>
+                <div class="stat-card-value" id="stat-leads-count">0</div>
+                <div class="stat-card-trend trend-up">↑ 18% vs last week</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-title">Conversion Rate</div>
+                <div class="stat-card-value" id="stat-conversion-rate">0%</div>
+                <div class="stat-card-trend trend-up">↑ 3.2% vs last week</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-title">Avg. Customer Rating</div>
+                <div class="stat-card-value" id="stat-avg-rating">4.8 / 5</div>
+                <div class="stat-card-trend">Based on local sessions</div>
+              </div>
+            </div>
+            
+            <div class="analytics-row">
+              <div class="analytics-card chart-container">
+                <h3>Lead Conversions (Weekly Trend)</h3>
+                <div class="chart-mock">
+                  <div class="chart-bar" style="--height: 45%;" data-label="Mon"><span class="bar-val">9</span></div>
+                  <div class="chart-bar" style="--height: 60%;" data-label="Tue"><span class="bar-val">12</span></div>
+                  <div class="chart-bar" style="--height: 50%;" data-label="Wed"><span class="bar-val">10</span></div>
+                  <div class="chart-bar" style="--height: 75%;" data-label="Thu"><span class="bar-val">15</span></div>
+                  <div class="chart-bar" style="--height: 90%;" data-label="Fri"><span class="bar-val">18</span></div>
+                  <div class="chart-bar" style="--height: 40%;" data-label="Sat"><span class="bar-val">8</span></div>
+                  <div class="chart-bar" style="--height: 15%;" data-label="Sun"><span class="bar-val">3</span></div>
+                </div>
+              </div>
+              <div class="analytics-card service-share-container">
+                <h3>Requested Services Share</h3>
+                <ul class="share-list" id="services-share-list">
+                  <li>
+                    <span>Teeth Whitening</span>
+                    <div class="progress-container"><div class="progress-bar" style="width: 35%;"></div></div>
+                    <span>35%</span>
+                  </li>
+                  <li>
+                    <span>Dental Implants</span>
+                    <div class="progress-container"><div class="progress-bar" style="width: 25%;"></div></div>
+                    <span>25%</span>
+                  </li>
+                  <li>
+                    <span>Invisalign</span>
+                    <div class="progress-container"><div class="progress-bar" style="width: 20%;"></div></div>
+                    <span>20%</span>
+                  </li>
+                  <li>
+                    <span>Other General Dentistry</span>
+                    <div class="progress-container"><div class="progress-bar" style="width: 20%;"></div></div>
+                    <span>20%</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- TAB B: Leads Inbox -->
+          <div id="admin-leads" class="dashboard-subview">
+            <div class="dashboard-action-header">
+              <h2 class="dashboard-header">Captured Leads</h2>
+              <button class="btn btn-secondary btn-sm" id="btn-export-leads">
+                Export CSV
+              </button>
+            </div>
+            
+            <div class="leads-table-wrapper">
+              <table class="leads-table">
+                <thead>
+                  <tr>
+                    <th>Patient Name</th>
+                    <th>Contact Info</th>
+                    <th>Requested Service</th>
+                    <th>Preferred Date/Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="leads-table-body">
+                  <!-- Leads will be injected dynamically -->
+                </tbody>
+              </table>
+              <div class="empty-state" id="leads-empty-state">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--border-color)" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                <p>No leads captured yet. Interact with the chatbot on the website to generate a lead!</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- TAB C: Chat Transcripts -->
+          <div id="admin-transcripts" class="dashboard-subview">
+            <h2 class="dashboard-header">Chat Transcripts</h2>
+            
+            <div class="transcripts-layout">
+              <div class="transcripts-sidebar">
+                <div class="search-box">
+                  <input type="text" id="transcript-search" placeholder="Search by name or content...">
+                </div>
+                <ul class="transcript-list" id="transcript-sessions-list">
+                  <!-- Session items dynamically injected -->
+                </ul>
+                <div class="empty-state" id="sessions-empty-state" style="padding: 20px;">
+                  <p>No transcripts recorded.</p>
+                </div>
+              </div>
+              
+              <div class="transcript-viewer">
+                <div class="viewer-header" id="transcript-viewer-header">
+                  <h3>Select a conversation</h3>
+                  <p>Choose a session from the list to display details and message log.</p>
+                </div>
+                <div class="viewer-messages" id="transcript-viewer-messages">
+                  <!-- Messages dynamically injected -->
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- TAB D: Configurator Settings -->
+          <div id="admin-settings" class="dashboard-subview">
+            <h2 class="dashboard-header">Chatbot Configuration</h2>
+            
+            <form id="chatbot-config-form" class="config-form">
+              <div class="form-section">
+                <h3>Visual Customization</h3>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="config-chat-title">Chatbot Name</label>
+                    <input type="text" id="config-chat-title" value="Bradley Dental Helper">
+                  </div>
+                  <div class="form-group">
+                    <label for="config-chat-color">Primary Theme Color</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" id="config-chat-color" value="#0f766e">
+                      <input type="text" id="config-chat-color-text" value="#0f766e" pattern="^#[0-9a-fA-F]{6}$">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3>Conversational Configuration</h3>
+                <div class="form-group">
+                  <label for="config-chat-greeting">Initial Greeting Message</label>
+                  <textarea id="config-chat-greeting" rows="3">Hello! Welcome to Bradley Dental Group. How can we help you achieve a beautiful, healthy smile today? 😊</textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label for="config-chat-persona">AI Persona / System Prompt</label>
+                  <textarea id="config-chat-persona" rows="3">You are a helpful, professional, and friendly dental clinic assistant for Bradley Dental Group in Bergenfield, NJ. Answer questions about procedures, hours, and offer to schedule appointments. Keep responses short and empathetic.</textarea>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3>Quick Reply Triggers</h3>
+                <div class="form-group">
+                  <label>Configured Quick Reply Options (Comma separated)</label>
+                  <input type="text" id="config-quick-replies" value="Book Appointment, Our Services, Office Hours & Location, Ask a Question">
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Settings</button>
+                <button type="button" class="btn btn-secondary" id="btn-reset-config">Reset Defaults</button>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 3. Floating Chatbot Widget -->
+  <div id="chatbot-widget-container" class="chatbot-closed">
+    <!-- Chat Icon / Launcher Button -->
+    <button id="chatbot-launcher" class="chatbot-launcher">
+      <span class="notification-badge" id="chat-notification-badge">1</span>
+      <!-- Open Chat Icon -->
+      <svg class="icon-open" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <!-- Close Chat Icon -->
+      <svg class="icon-close" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    
+    <!-- Hover Notification Banner -->
+    <div id="chatbot-notification" class="chatbot-notification-banner">
+      <div class="notif-close" id="notif-close-btn">&times;</div>
+      <div class="notif-text">Have a question? Ask our dental helper! 🦷</div>
+    </div>
+    
+    <!-- Chat Card Window -->
+    <div class="chatbot-window">
+      <!-- Chat Window Header -->
+      <div class="chatbot-header">
+        <div class="chatbot-header-info">
+          <div class="chatbot-avatar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C11.5 2 7 5.5 7 10C7 16 12 22 12 22C12 22 17 16 17 10C17 5.5 12.5 2 12 2Z"/></svg>
+            <span class="online-indicator"></span>
+          </div>
+          <div>
+            <h3 id="widget-chat-title">Bradley Dental Helper</h3>
+            <p class="status-text">Online | Typically replies instantly</p>
+          </div>
+        </div>
+        <button id="chatbot-reset-btn" class="header-action-btn" title="Restart chat">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        </button>
+      </div>
+      
+      <!-- Message Stream -->
+      <div class="chatbot-messages" id="chatbot-messages-stream">
+        <!-- Messages dynamically injected -->
+      </div>
+      
+      <!-- Typing Indicator -->
+      <div class="typing-indicator-wrapper" id="typing-indicator" style="display: none;">
+        <div class="chatbot-avatar avatar-sm">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C11.5 2 7 5.5 7 10C7 16 12 22 12 22C12 22 17 16 17 10C17 5.5 12.5 2 12 2Z"/></svg>
+        </div>
+        <div class="typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      
+      <!-- Quick Options Container -->
+      <div class="chatbot-quick-replies" id="chatbot-quick-replies-container">
+        <!-- Buttons injected dynamically -->
+      </div>
+      
+      <!-- Message Input Form -->
+      <form id="chatbot-input-form" class="chatbot-input-area">
+        <input type="text" id="chatbot-user-input" placeholder="Type a message..." autocomplete="off">
+        <button type="submit" id="chatbot-send-btn" class="send-btn" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
