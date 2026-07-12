@@ -2,6 +2,14 @@
 
 An interactive, premium web application built for **Bradley Dental Group** (Bergenfield, NJ). It showcases a customized AI-like chatbot widget embedded within a patient-facing landing page, paired with an Administrative Console to manage settings, view chat logs, and track captured leads.
 
+## Previews
+
+### Chatbot Widget in Action
+![Bradley Dental Helper Chatbot Interface](assets/chat_in_use.png)
+
+### Administrative Dashboard
+![Admin Dashboard Leads Inbox](assets/admin_dashboard.png)
+
 ## Features
 
 1. **Patient Landing Page Preview**: 
