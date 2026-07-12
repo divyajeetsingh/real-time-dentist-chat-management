@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Guide: Chatbot PDF & Image Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #0f766e;
+      --primary-light: #f0fdfa;
+      --text-dark: #0f172a;
+      --text-medium: #334155;
+      --text-light: #64748b;
+      --border-color: #cbd5e1;
+      --bg-light: #f8fafc;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text-medium);
+      line-height: 1.6;
+      padding: 50px;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #ffffff;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-dark);
+      font-weight: 700;
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: var(--primary-color);
+      border-bottom: 3px solid var(--primary-color);
+      padding-bottom: 12px;
+      margin-top: 0;
+      margin-bottom: 1.5em;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      border-bottom: 1.5px solid var(--border-color);
+      padding-bottom: 6px;
+      margin-top: 2em;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      color: var(--primary-color);
+    }
+
+    p {
+      margin-bottom: 1.2em;
+      font-size: 0.95rem;
+    }
+
+    ul, ol {
+      margin-bottom: 1.5em;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 0.6em;
+      font-size: 0.95rem;
+    }
+
+    strong {
+      color: var(--text-dark);
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: var(--primary-light);
+      color: var(--primary-color);
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .alert {
+      background-color: var(--bg-light);
+      border-left: 4px solid var(--primary-color);
+      padding: 15px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5em 0;
+    }
+
+    .alert-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .alert p {
+      margin-bottom: 0;
+      font-size: 0.9rem;
+    }
+
+    .doc-preview {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        padding: 20px;
+      }
+      .no-print {
+        display: none;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Chatbot PDF & Image Management System<br><span style="font-size: 1.1rem; color: var(--text-light); font-weight: 500;">User & Admin Operations Guide</span></h1>
+
+  <p>This user manual details the functionality, workflow, and testing instructions for the customized file attachment and PDF generation module implemented for the <strong>Bradley Dental Group</strong> system.</p>
+
+  <div class="alert">
+    <div class="alert-title">System Architecture Note</div>
+    <p>This application relies on HTML5 file reader APIs, LocalStorage data persistence, and the html2pdf.js package. PDF logs automatically omit heavy raw base64 data to guarantee optimized file size and clean prints.</p>
+  </div>
+
+  <h2>1. Patient-Facing Chatbot Features</h2>
+  
+  <h3>1.1 Image & PDF File Attachments</h3>
+  <p>Patients can attach digital copies of document credentials directly within their conversational stream:</p>
+  <ul>
+    <li><strong>How to use</strong>: Click the paperclip icon in the message bar, select a local document (insurance card, photo of dental concern, etc.).</li>
+    <li><strong>Supported Formats</strong>: All standard image types (PNG, JPEG, WebP) and PDF documents.</li>
+    <li><strong>Size Constraints</strong>: Upload size is capped at <strong>2.5MB</strong> to prevent database limits.</li>
+  </ul>
+
+  <h3>1.2 Render Behaviors inside Chat</h3>
+  <ul>
+    <li><strong>Images</strong>: Render instantly as a thumbnail inside the patient bubble. Patients can click the image bubble to open the full picture in a new tab.</li>
+    <li><strong>PDFs</strong>: Render as a clickable file card displaying the document name and download icon:
+      <br>
+      <div class="doc-preview">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        insurance_details.pdf
+      </div>
+    </li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <h2>2. Administration Console Features</h2>
+
+  <h3>2.1 Leads Summary PDF Export</h3>
+  <p>Receptionists can download patient scheduling request sheets formatted as professional clinic summary sheets:</p>
+  <ol>
+    <li>Navigate to the <strong>Admin Dashboard</strong> tab in the header.</li>
+    <li>Click <strong>Leads Inbox</strong> in the sidebar.</li>
+    <li>Locate the target patient lead row, and click the <strong>PDF icon</strong> (the file symbol next to delete).</li>
+    <li>A document named <code>{PatientName}_lead_sheet.pdf</code> will compile and download instantly.</li>
+  </ol>
+
+  <h3>2.2 Chat Log Transcript PDF Export</h3>
+  <p>Clinic coordinators can export complete message logs for dental records:</p>
+  <ol>
+    <li>Navigate to <strong>Admin Dashboard</strong> -> select <strong>Chat Transcripts</strong> in the sidebar.</li>
+    <li>Select a chat session from the list.</li>
+    <li>Click the <strong>Download PDF</strong> button inside the viewer header.</li>
+    <li>A document named <code>{PatientName}_transcript.pdf</code> will generate and download to your machine.</li>
+  </ol>
+
+  <h3>2.3 Inspecting Patient Attachments</h3>
+  <p>Any document or photo uploaded by a patient during their chat is saved inside their transcript. The admin panel renders these files inside the viewer message stream, allowing staff to click and download documents or preview images uploaded by the patient.</p>
+
+  <h2>3. Theme Configurator</h2>
+  <p>Theme colors modified inside <strong>Chatbot Configuration</strong> apply immediately to the chatbot launcher, header, message bubbles, quick replies, and generated PDF document accents.</p>
+
+  <div style="margin-top: 60px; border-top: 1px solid var(--border-color); padding-top: 15px; text-align: center; font-size: 0.8rem; color: var(--text-light);">
+    Bradley Dental Group &bull; 35 N Washington Ave, Bergenfield, NJ &bull; (201) 385-6900
+  </div>
+
+</body>
+</html>
