@@ -118,6 +118,11 @@ const quickRepliesContainer = document.getElementById('chatbot-quick-replies-con
 const typingIndicator = document.getElementById('typing-indicator');
 const chatbotResetBtn = document.getElementById('chatbot-reset-btn');
 
+// File Attachment elements
+const chatAttachBtn = document.getElementById('chat-attach-btn');
+const chatFileInput = document.getElementById('chat-file-input');
+const btnDownloadPdfTranscript = document.getElementById('btn-download-pdf-transcript');
+
 // Admin Elements
 const sidebarMenuItems = document.querySelectorAll('.sidebar-menu .menu-item');
 const dashboardSubviews = document.querySelectorAll('.dashboard-subview');
@@ -327,10 +332,26 @@ function addMessageBubble(sender, text) {
     `;
   }
   
+  // Format message bubble content based on payload type
+  let bubbleHTML = text;
+  
+  if (text.startsWith('data:image/')) {
+    bubbleHTML = `<img src="${text}" class="chat-msg-image" alt="Patient Uploaded Image" onclick="window.open('${text}')">`;
+  } else if (text.startsWith('data:application/pdf;') || text.includes(';base64,')) {
+    const metaMatch = text.match(/name=([^;]+);/);
+    const fileName = metaMatch ? decodeURIComponent(metaMatch[1]) : 'attached_document.pdf';
+    bubbleHTML = `
+      <a href="${text}" download="${fileName}" class="doc-attachment" title="Download Patient PDF">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        ${fileName}
+      </a>
+    `;
+  }
+  
   msgDiv.innerHTML = `
     ${avatarHTML}
     <div class="msg-bubble">
-      ${text}
+      ${bubbleHTML}
     </div>
   `;
   
@@ -440,10 +461,10 @@ function processGeneralNLP(text) {
   
   // Service-specific answers
   if (query.includes('whitening') || query.includes('zoom') || query.includes('white')) {
-    addMessageBubble('bot', 'We offer professional **Zoom Teeth Whitening**! It is a clinically proven system that whitens your teeth up to 8 shades in just one 1-hour appointment. We protect your gums and apply a specialized light-activated gel. It\'s safe and produces immediate results. Would you like to book a whitening appointment?');
+    addMessageBubble('bot', 'We offer professional **Zoom Teeth Whitening**! It is a clinically proven system that whitens your teeth up to 8 shades in just one 1-hour appointment. We protect your gums and apply a specialized light-activated gel. It\'s safe and produces immediate results. Would you like to book a whitening appointment?<br><br><img src="assets/whitening_result.png" class="chat-msg-image" alt="Zoom Whitening Results">');
   } 
   else if (query.includes('implant') || query.includes('implants') || query.includes('missing teeth')) {
-    addMessageBubble('bot', 'Our premium **Dental Implants** act as permanent roots that support realistic ceramic crowns. They prevent bone loss and blend perfectly with your natural teeth. Implants last a lifetime with proper care! We offer flexible payment options (CareCredit, Cherry). Shall we schedule an implant consultation for you?');
+    addMessageBubble('bot', 'Our premium **Dental Implants** act as permanent roots that support realistic ceramic crowns. They prevent bone loss and blend perfectly with your natural teeth. Implants last a lifetime with proper care! We offer flexible payment options (CareCredit, Cherry). Shall we schedule an implant consultation for you?<br><br><img src="assets/dental_implants.png" class="chat-msg-image" alt="Dental Implants Illustration">');
   }
   else if (query.includes('invisalign') || query.includes('braces') || query.includes('ortho') || query.includes('aligners') || query.includes('straighten')) {
     addMessageBubble('bot', 'We offer **Invisalign Clear Aligners**! They are virtually invisible, comfortable to wear, and can be removed when eating or brushing. They are a popular, modern alternative to traditional metal braces. Would you like to book a consultation to see if Invisalign is right for you?');
@@ -461,8 +482,8 @@ function processGeneralNLP(text) {
   else if (query.includes('hour') || query.includes('when') || query.includes('open') || query.includes('time') || query.includes('saturday')) {
     addMessageBubble('bot', 'Our office hours are:<br>📅 **Monday - Friday**: 9:00 AM - 6:00 PM<br>📅 **Saturday**: 9:00 AM - 2:00 PM<br>📅 **Sunday**: Closed');
   }
-  else if (query.includes('location') || query.includes('address') || query.includes('where') || query.includes('map') || query.includes('directions') || query.includes('bergenfield')) {
-    addMessageBubble('bot', 'Bradley Dental Group is located in Bergenfield, NJ at:<br>📍 **35 North Washington Avenue, Bergenfield, NJ 07621**<br><br>We are right off Washington Ave with free parking behind the building.');
+  else if (query.includes('location') || query.includes('address') || query.includes('where') || query.includes('map') || query.includes('directions') || query.includes('bergenfield') || query.includes('office') || query.includes('clinic')) {
+    addMessageBubble('bot', 'Bradley Dental Group is located in Bergenfield, NJ at:<br>📍 **35 North Washington Avenue, Bergenfield, NJ 07621**<br><br>We are right off Washington Ave with free parking behind the building.<br><br><img src="assets/clinic_lobby.png" class="chat-msg-image" alt="Bradley Dental Group Lobby">');
   }
   else if (query.includes('phone') || query.includes('contact') || query.includes('email') || query.includes('call')) {
     addMessageBubble('bot', 'You can reach our front desk team at:<br>📞 Phone: **(201) 385-6900**<br>✉️ Email: **bradleydental35@gmail.com**');
@@ -629,6 +650,9 @@ function renderLeadsTable() {
         </select>
       </td>
       <td>
+        <button class="btn-icon pdf-btn" onclick="downloadLeadPDF('${lead.id}')" title="Download Lead Sheet PDF" style="color: var(--primary-color); margin-right: 6px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        </button>
         <button class="btn-icon delete-btn" onclick="deleteLead('${lead.id}')" title="Delete lead">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
         </button>
@@ -637,6 +661,76 @@ function renderLeadsTable() {
     leadsTableBody.appendChild(tr);
   });
 }
+
+// Generate patient lead PDF
+window.downloadLeadPDF = function(leadId) {
+  const lead = leads.find(l => l.id === leadId);
+  if (!lead) return;
+  
+  const opt = {
+    margin:       15,
+    filename:     `${lead.name.replace(/\s+/g, '_')}_lead_sheet.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  
+  const element = document.createElement('div');
+  element.id = 'pdf-print-template';
+  element.style.display = 'block';
+  element.innerHTML = `
+    <div class="pdf-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid ${appConfig.chatColor}; padding-bottom: 15px;">
+      <div class="pdf-title-area">
+        <h1 style="color: ${appConfig.chatColor}; font-family: Outfit, sans-serif; font-size: 1.8rem; margin: 0 0 4px 0;">Bradley Dental Group</h1>
+        <p style="margin: 0; color: #64748b; font-size: 0.85rem;">35 N Washington Ave, Bergenfield, NJ 07621 | (201) 385-6900</p>
+      </div>
+      <div style="text-align: right;">
+        <h3 style="color: ${appConfig.chatColor}; font-size: 1.1rem; margin: 0 0 4px 0;">Patient Lead Sheet</h3>
+        <p style="margin: 0; color: #64748b; font-size: 0.85rem;">ID: ${lead.id}</p>
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 40px; margin-top: 30px;">
+      <div class="pdf-section-title" style="color: ${appConfig.chatColor}; border-bottom: 1.5px solid ${appConfig.chatColor}; padding-bottom: 6px; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 16px; font-family: Outfit, sans-serif;">Patient Contact Details</div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 0.95rem;">
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 10px 0; font-weight: bold; width: 35%; color: #334155;">Full Name:</td>
+          <td style="padding: 10px 0; color: #0f172a; font-weight: 600;">${lead.name}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 10px 0; font-weight: bold; color: #334155;">Contact Info:</td>
+          <td style="padding: 10px 0; color: #0f172a;">${lead.contact}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 10px 0; font-weight: bold; color: #334155;">Date Logged:</td>
+          <td style="padding: 10px 0; color: #0f172a;">${new Date(lead.dateAdded).toLocaleString()}</td>
+        </tr>
+      </table>
+      
+      <div class="pdf-section-title" style="color: ${appConfig.chatColor}; border-bottom: 1.5px solid ${appConfig.chatColor}; padding-bottom: 6px; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 16px; font-family: Outfit, sans-serif;">Request Preferences</div>
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 10px 0; font-weight: bold; width: 35%; color: #334155;">Requested Treatment:</td>
+          <td style="padding: 10px 0; color: ${appConfig.chatColor}; font-weight: 700;">${lead.service}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 10px 0; font-weight: bold; color: #334155;">Preferred Time Slot:</td>
+          <td style="padding: 10px 0; color: #0f172a;">${lead.dateTime}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 10px 0; font-weight: bold; color: #334155;">Current Status:</td>
+          <td style="padding: 10px 0;"><span style="text-transform: uppercase; font-weight: 800; font-size: 0.8rem; background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 4px;">${lead.status}</span></td>
+        </tr>
+      </table>
+    </div>
+    
+    <div style="margin-top: 100px; border-top: 1px solid #cbd5e1; padding-top: 20px; text-align: center; font-size: 0.8rem; color: #64748b;">
+      Bradley Family Dental Reception Management &bull; Private Patient Lead Document
+    </div>
+  `;
+  
+  html2pdf().from(element).set(opt).save();
+};
 
 // Global functions for inline table calls
 window.changeLeadStatus = function(leadId, newStatus) {
@@ -731,12 +825,19 @@ function renderTranscriptsList(filterText = '') {
   });
 }
 
+// Selected active session reference for PDF exports
+let selectedSessionForPdf = null;
+
 // Display single transcript details
 function displayTranscriptDetails(session) {
-  transcriptViewerHeader.innerHTML = `
-    <h3>Chat with ${escapeHtml(session.name)}</h3>
-    <p>Session ID: ${session.id} | Date: ${session.date} | Messages Log: ${session.messages.length}</p>
-  `;
+  selectedSessionForPdf = session;
+  
+  // Update header content
+  transcriptViewerHeader.querySelector('h3').textContent = `Chat with ${session.name}`;
+  transcriptViewerHeader.querySelector('p').textContent = `Session ID: ${session.id} | Date: ${session.date} | Messages Log: ${session.messages.length}`;
+  
+  // Show PDF Button
+  btnDownloadPdfTranscript.style.display = 'inline-flex';
   
   transcriptViewerMessages.innerHTML = '';
   
@@ -753,10 +854,25 @@ function displayTranscriptDetails(session) {
       `;
     }
     
+    // Check for images or attachments
+    let bubbleContent = msg.text;
+    if (msg.text.startsWith('data:image/')) {
+      bubbleContent = `<img src="${msg.text}" class="chat-msg-image" alt="Uploaded File" style="max-height: 120px;" onclick="window.open('${msg.text}')">`;
+    } else if (msg.text.startsWith('data:application/pdf;') || msg.text.includes(';base64,')) {
+      const metaMatch = msg.text.match(/name=([^;]+);/);
+      const fileName = metaMatch ? decodeURIComponent(metaMatch[1]) : 'attached_document.pdf';
+      bubbleContent = `
+        <a href="${msg.text}" download="${fileName}" class="doc-attachment" style="padding: 8px 10px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          ${fileName}
+        </a>
+      `;
+    }
+    
     div.innerHTML = `
       ${avatarHTML}
       <div class="msg-bubble">
-        ${msg.text}
+        ${bubbleContent}
       </div>
     `;
     
@@ -765,6 +881,74 @@ function displayTranscriptDetails(session) {
   
   transcriptViewerMessages.scrollTop = transcriptViewerMessages.scrollHeight;
 }
+
+// Download session log as PDF
+btnDownloadPdfTranscript.addEventListener('click', () => {
+  if (!selectedSessionForPdf) return;
+  
+  const session = selectedSessionForPdf;
+  const opt = {
+    margin:       12,
+    filename:     `${session.name.replace(/\s+/g, '_')}_transcript.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  
+  const element = document.createElement('div');
+  element.id = 'pdf-print-template';
+  element.style.display = 'block';
+  
+  // Format log list without rendering base64 raw codes inside PDF
+  const messageLogHtml = session.messages.map(m => {
+    let textRep = m.text;
+    if (m.text.startsWith('data:image/')) textRep = '[Image Attachment]';
+    else if (m.text.startsWith('data:application/pdf') || m.text.includes(';base64,')) textRep = '[PDF Document Attachment]';
+    
+    return `
+      <div class="pdf-log-msg ${m.sender === 'bot' ? 'incoming' : 'outgoing'}" style="margin-bottom: 8px; width: fit-content; max-width: 80%; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0; ${m.sender === 'bot' ? 'background: #f8fafc; align-self: flex-start;' : 'background: #f0fdfa; border-color: rgba(15,118,110,0.15); align-self: flex-end;'}">
+        <strong style="font-size: 0.75rem; color: #64748b; display: block; margin-bottom: 2px;">${m.sender === 'bot' ? 'Assistant' : 'Patient'}</strong>
+        <span style="font-size: 0.85rem; color: #0f172a; line-height: 1.4;">${textRep}</span>
+      </div>
+    `;
+  }).join('');
+  
+  element.innerHTML = `
+    <div class="pdf-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid ${appConfig.chatColor}; padding-bottom: 15px;">
+      <div class="pdf-title-area">
+        <h1 style="color: ${appConfig.chatColor}; font-family: Outfit, sans-serif; font-weight: 700; margin: 0 0 4px 0;">Bradley Dental Group</h1>
+        <p style="margin: 0; color: #64748b; font-size: 0.85rem;">35 N Washington Ave, Bergenfield, NJ 07621 | (201) 385-6900</p>
+      </div>
+      <div style="text-align: right;">
+        <h3 style="color: ${appConfig.chatColor}; font-size: 1.1rem; margin: 0 0 4px 0;">Chat Transcript Log</h3>
+        <p style="margin: 0; color: #64748b; font-size: 0.85rem;">Date: ${session.date}</p>
+      </div>
+    </div>
+    
+    <div class="pdf-meta-info" style="display: flex; justify-content: space-between; padding: 14px 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 24px; font-size: 0.9rem;">
+      <div>
+        <strong style="color: #64748b; font-size: 0.75rem; text-transform: uppercase;">Patient Name</strong>
+        <p style="font-weight: 600; color: #0f172a; margin-top: 2px; margin-bottom: 0;">${session.name}</p>
+      </div>
+      <div>
+        <strong style="color: #64748b; font-size: 0.75rem; text-transform: uppercase;">Session ID</strong>
+        <p style="color: #0f172a; margin-top: 2px; margin-bottom: 0;">${session.id}</p>
+      </div>
+    </div>
+    
+    <div class="pdf-section-title" style="color: ${appConfig.chatColor}; border-bottom: 1.5px solid ${appConfig.chatColor}; padding-bottom: 4px; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 16px; font-family: Outfit, sans-serif;">Conversation Details</div>
+    
+    <div class="pdf-chat-log" style="display: flex; flex-direction: column; gap: 10px; padding: 10px 0;">
+      ${messageLogHtml}
+    </div>
+    
+    <div style="margin-top: 60px; border-top: 1px solid #e2e8f0; padding-top: 16px; text-align: center; font-size: 0.75rem; color: #94a3b8;">
+      Bradley Dental Group Helper &bull; Generated dynamically on ${new Date().toLocaleString()}
+    </div>
+  `;
+  
+  html2pdf().from(element).set(opt).save();
+});
 
 // Search bar listener for transcripts
 transcriptSearch.addEventListener('input', (e) => {
@@ -832,6 +1016,49 @@ function escapeHtml(unsafe) {
 // App startup initialization
 window.addEventListener('DOMContentLoaded', () => {
   initData();
+  
+  // File Attachment handlers
+  chatAttachBtn.addEventListener('click', () => {
+    chatFileInput.click();
+  });
+  
+  chatFileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    // Check file size (limit base64 size to avoid browser lag - e.g. 2.5MB)
+    if (file.size > 2.5 * 1024 * 1024) {
+      alert('File size exceeds the 2.5MB limit. Please upload a smaller image or document.');
+      chatFileInput.value = '';
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const dataUrl = evt.target.result;
+      
+      // Inject details into payload name if PDF
+      let payload = dataUrl;
+      if (file.type === 'application/pdf') {
+        payload = `data:application/pdf;name=${encodeURIComponent(file.name)};base64,${dataUrl.split(',')[1]}`;
+      }
+      
+      // Send the base64 string as user input
+      addMessageBubble('user', payload);
+      chatFileInput.value = '';
+      
+      // Chatbot thinking reply
+      quickRepliesContainer.innerHTML = '';
+      showTyping(true);
+      
+      setTimeout(() => {
+        showTyping(false);
+        addMessageBubble('bot', `I have successfully received and saved your attached file (**${file.name}**). Our office staff will review this document along with your appointment details. Is there anything else you'd like to share?`);
+        renderQuickReplies();
+      }, 1200);
+    };
+    reader.readAsDataURL(file);
+  });
   
   // Set default notification trigger delay for landing page wow factor
   setTimeout(() => {
